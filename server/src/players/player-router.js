@@ -9,6 +9,6 @@ router.get('/', (req, res) => {
     res.json({ message: "Estás en la raíz de players" })
 })
 
-router.post('/', playerController.create())
+//router.post('/', playerController.create())
 
 export default router

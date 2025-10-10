@@ -1,24 +1,25 @@
 import { Sequelize } from 'sequelize'
 import { config } from 'dotenv'
 
-config();
+config()
+
 
 const sequelize = new Sequelize(
-    process.env.DN_NAME,
-    process.env.DN_USER,
-    process.env.DN_PASSWORD,
-    {
-        host: process.env.DN_HOST,
-        port: process.env.DN_PORT,
-        dialect: process.env.DN_DIALECT,
-        logging: false,
-        pool: {
-          max: 5,
-          min: 0,
-          acquire: 30000,
-          idle: 10000
-        }
+  process.env.DB_NAME,
+  process.env.DB_USER,
+  process.env.DB_PASSWORD,
+  {
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    dialect: process.env.DB_DIALECT,
+    logging: console.log(),
+    define: {
+      underscored: true,
+      timestamps: true,
+      createdAt: 'created_at',
+      updatedAt: 'updated_at'
     }
+  }
 )
 
 export default sequelize

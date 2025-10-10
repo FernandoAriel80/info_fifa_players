@@ -129,11 +129,8 @@ export default class CsvProcessUseCase {
     for (const data of processedData) {
 
       // Guardar jugador
-      const player = await this.playerRepository.create({
-        ...data.player,
-        club_id: club.id,
-        nationality_id: nationality.id
-      })
+      const player = await this.playerRepository.create(data.player)
+
 
       // Guardar league
       const league = await this.leagueRepository.create(data.league)
@@ -169,11 +166,14 @@ export default class CsvProcessUseCase {
       });
 
       // Guardar posiciones
-      await this.playerRepository.savePositions(player.id, data.positions);
+      await this.positionRepository.create({
+        ...data.positions,
+        player_id: player.id,
+      });
 
       // Guardar tags y traits
-      await this.playerRepository.saveTags(player.id, data.tags);
-      await this.playerRepository.saveTraits(player.id, data.traits);
+      await this.tagRepository.create(player.id, data.tags);
+      await this.traitRepository.create(player.id, data.traits);
 
       players.push(player);
     }

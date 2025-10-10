@@ -1,20 +1,8 @@
+// src/models/tag.js
 import { DataTypes } from 'sequelize'
-import { sequelize } from '../database/sequelize'
+import sequelize from '../database/sequelize.js'
 
-const Tag = sequelize.define('Tag', {
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
-  },
-  name: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true
-  }
-}, {
-  tableName: 'tags',
-  timestamps: true
-})
-
-export default Tag
+export const Tag = sequelize.define('Tag', {
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    name: { type: DataTypes.STRING, allowNull: false, unique: true }
+  }, { tableName: 'tags' })

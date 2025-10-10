@@ -1,22 +1,8 @@
+// src/models/league.js
 import { DataTypes } from 'sequelize'
-import { sequelize } from '../database/sequelize'
+import sequelize from '../database/sequelize.js'
 
-const League = sequelize.define('League', {
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
-  },
-  name: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  level: {
-    type: DataTypes.INTEGER
-  }
-}, {
-  tableName: 'leagues',
-  timestamps: true
-})
-
-export default League
+export const League = sequelize.define('League', {
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    name: { type: DataTypes.STRING, allowNull: false }
+  }, { tableName: 'leagues' })

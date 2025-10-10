@@ -1,19 +1,9 @@
+// src/models/position.js
 import { DataTypes } from 'sequelize'
-import { sequelize } from '../database/sequelize'
+import sequelize from '../database/sequelize.js'
 
-const Position = sequelize.define('Position', {
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
-  },
-  position: {
-    type: DataTypes.STRING,
-    allowNull: false
-  }
-}, {
-  tableName: 'positions',
-  timestamps: true
-})
-
-export default Position
+export const Position = sequelize.define('Position', {
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    player_id: { type: DataTypes.INTEGER, allowNull: false },
+    name: { type: DataTypes.STRING(50), allowNull: false }
+  }, { tableName: 'positions' })
