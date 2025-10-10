@@ -4,5 +4,5 @@ import sequelize from '../database/sequelize.js'
 
 export const League = sequelize.define('League', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    name: { type: DataTypes.STRING, allowNull: false }
+    name: { type: DataTypes.STRING, allowNull: true }
   }, { tableName: 'leagues' })

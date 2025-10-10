@@ -9,7 +9,7 @@ async function asyncDb() {
     
     setupAssociations()
 
-    await sequelize.sync({ force: true }); // o { force: true } para borrar y recrear
+    await sequelize.sync({ force: false }); // o { force: true } para borrar y recrear
     console.log('🗄️  Base de datos sincronizada correctamente.')
   } catch (error) {
     console.error('❌ Error al sincronizar la base de datos:', error)

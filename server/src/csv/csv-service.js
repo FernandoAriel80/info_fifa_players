@@ -1,10 +1,10 @@
-import CsvProcessUseCase from './csv-process-usecase'
-import CsvParserService from './csv-parcer-service'
 
-class CSVProcessingService {
+
+
+export default class CsvService {
   constructor(repositories) {
     this.csvParserService = new CsvParserService()
-    this.csvProcessUseCase = new CsvProcessUseCase(
+    this.csvProcessUseCase = new CreateCsvUseCase(
       repositories.playerRepository,
       repositories.clubRepository,
       repositories.nationalityRepository,
@@ -14,19 +14,17 @@ class CSVProcessingService {
     )
   }
 
-  async processCSVFile(fileBuffer) {
+  async processCSVFile(filePath) {
     try {
       // Parsear CSV
-      const csvData = await this.csvParserService.parseCSVBuffer(fileBuffer);
-      
+      //const csvData = await this.csvParserService.parseCSVFile(filePath);
       // Procesar datos
-      const result = await this.processCSVUseCase.execute(csvData);
+      //const result = await this.csvProcessUseCase.execute(csvData);
+      console.log(result)
       
-      return result;
+      return result
     } catch (error) {
       throw new Error(`CSV processing failed: ${error.message}`);
     }
   }
 }
-
-module.exports = CSVProcessingService;

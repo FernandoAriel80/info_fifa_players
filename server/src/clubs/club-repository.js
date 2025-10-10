@@ -1,31 +1,10 @@
-const { Club, League } = require('../database/sequelize');
+import { Club } from '../shared/models/Club.js'
 
-class ClubRepository {
-  async findOrCreate(clubData) {
-    const [club] = await Club.findOrCreate({
-      where: { club_team_id: clubData.club_team_id },
-      defaults: {
-        name: clubData.club_name,
-        club_team_id: clubData.club_team_id
-      },
-      include: [League]
-    });
-
-    // Manejar liga
-    if (clubData.league_id) {
-      const [league] = await League.findOrCreate({
-        where: { league_id: clubData.league_id },
-        defaults: {
-          name: clubData.league_name,
-          level: clubData.league_level
-        }
-      });
-      
-      await club.setLeague(league);
+export default class ClubRepository {
+    async create(data, options = {}) {
+        return await Club.create(data, options);
     }
-
-    return club;
-  }
+    async findById(id) {
+        return await Club.findOne({ where: { player_id: id } });
+    }
 }
-
-module.exports = ClubRepository;
