@@ -1,7 +1,7 @@
 
 export default class CsvController {
-  constructor(csvService) {
-    this.csvService = csvService;
+  constructor(createCsvUseCase) {
+    this.createCsvUseCase = createCsvUseCase;
   }
 
   async uploadCsv(req, res) {
@@ -13,8 +13,8 @@ export default class CsvController {
         })
       }
 
-      const result = await this.csvService.processCSVFile(req.file.buffer)
-      
+      const result = await this.createCsvUseCase.execute(req.file.path)
+
       res.json({
         success: true,
         data: result,

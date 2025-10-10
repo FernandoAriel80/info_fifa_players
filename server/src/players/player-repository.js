@@ -1,15 +1,12 @@
-const { Player, PlayerPosition, PlayerTag, PlayerTrait } = require('../database/sequelize');
+import { Player } from '../shared/models/Player.js'
 
 export default class PlayerRepository {
-  async create(playerData) {
-    return await Player.create(playerData);
+  async create(data, options = {}) {
+    return await Player.create(data, options);
   }
 
-  async findByPlayerId(playerId) {
-    return await Player.findOne({ where: { player_id: playerId } });
+  async findById(id) {
+    return await Player.findOne({ where: { player_id: id } });
   }
 
-  async bulkCreate(playersData) {
-    return await Player.bulkCreate(playersData);
-  }
 }

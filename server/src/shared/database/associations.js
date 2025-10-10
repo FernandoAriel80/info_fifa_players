@@ -11,6 +11,7 @@ import { Trait } from  '../models/Trait.js'
 import { Position } from  '../models/Position.js'
 import { PlayerTag } from  '../models/PlayerTag.js'
 import { PlayerTrait } from  '../models/PlayerTrait.js'
+import { PlayerPosition } from '../models/PlayerPosition.js'
 
 export default function setupAssociations() {
 
@@ -45,13 +46,17 @@ export default function setupAssociations() {
   })
 
   // Player - Position (One-to-Many)
-  Player.hasMany(Position, {
+  Player.belongsToMany(Position, {
+    through: PlayerPosition,
     foreignKey: 'player_id',
+    otherKey: 'position_id',
     as: 'positions'
   })
-  Position.belongsTo(Player, {
-    foreignKey: 'player_id',
-    as: 'player'
+  Position.belongsToMany(Player, {
+    through: PlayerPosition,
+    foreignKey: 'position_id',
+    otherKey: 'player_id',
+    as: 'players'
   })
 
   // Player - Tag (Many-to-Many)
