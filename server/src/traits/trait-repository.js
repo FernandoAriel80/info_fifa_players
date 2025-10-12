@@ -17,7 +17,7 @@ export default class TraitRepository {
 
       dataRelations.push({
         player_id: id,
-        position_id: data.id
+        trait_id: data.id
       });
     }
 
