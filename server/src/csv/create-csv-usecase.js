@@ -16,7 +16,7 @@ export default class CreateCsvUseCase {
     if (!csvData) throw new Error('Error en el parseo: parseCSVFile')
 
     const processedData = this.parseCsvDataService.parseCSVData(csvData);
-    // ✅ SOLO PRIMEROS 10 REGISTROS PARA PRUEBA
+    // ✅ SOLO PRIMEROS 1000 REGISTROS PARA PRUEBA
     const testData = processedData.slice(0, 1000);
     // Procesar en transacción
     console.log('🎯 Use PlayerBulkCsvRepository ejecutándose...');

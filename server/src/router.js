@@ -1,10 +1,10 @@
 import { Router } from 'express'
-import playerRouter from './players/player.routes.js'
-import csvRouter from './csv/csv.routes.js'
+import playerRoutes from './players/player.routes.js'
+import csvRoutes from './csv/csv.routes.js'
 const router = Router()
 
-router.use('/players', playerRouter)
+router.use('/players', playerRoutes)
 
-router.use('/csv',csvRouter)
+router.use('/csv',csvRoutes)
 
 export default router
