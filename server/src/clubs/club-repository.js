@@ -2,6 +2,13 @@ import { Club } from '../shared/models/Club.js'
 import { ClubContract } from '../shared/models/ClubContract.js';
 
 export default class ClubRepository {
+    async all() {
+        return await Club.findAll({
+            attributes: ['name'],
+            group: ['name'],
+            order: [['name', 'ASC']]
+        })
+    }
     async create(data, options = {}) {
         return await Club.create(data, options);
     }
