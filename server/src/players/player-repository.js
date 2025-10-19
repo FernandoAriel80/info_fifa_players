@@ -1,22 +1,37 @@
-import { Player } from '../shared/models/Player.js'
-import { Nationality } from '../shared/models/Nationality.js'
-import { Club } from '../shared/models/Club.js'
-import { League } from '../shared/models/League.js'
-import { Position } from '../shared/models/Position.js'
-import { Tag } from '../shared/models/Tag.js'
-import { Trait } from '../shared/models/Trait.js'
-import { PlayerStats } from '../shared/models/PlayerStats.js'
-import { NationalTeam } from '../shared/models/NationalTeam.js'
-import { ClubContract } from '../shared/models/ClubContract.js'
-import { Op } from 'sequelize';
+import { Player } from "../shared/models/Player.js";
+import { Nationality } from "../shared/models/Nationality.js";
+import { Club } from "../shared/models/Club.js";
+import { League } from "../shared/models/League.js";
+import { Position } from "../shared/models/Position.js";
+import { Tag } from "../shared/models/Tag.js";
+import { Trait } from "../shared/models/Trait.js";
+import { PlayerStats } from "../shared/models/PlayerStats.js";
+import { NationalTeam } from "../shared/models/NationalTeam.js";
+import { ClubContract } from "../shared/models/ClubContract.js";
+import { Op } from "sequelize";
 
 export default class PlayerRepository {
-
   async all() {
     return await Player.findAll({
-      include: this.getDefaultIncludes()
-    })
+      include: this.getDefaultIncludes(),
+    });
   }
+
+  /*  async getAllFifaVersions() {
+    const versions = await Player.findAll({
+      attributes: ["fifa_version"],
+      group: ["fifa_version"],
+      order: [["fifa_version", "ASC"]],
+      raw: true,
+    });
+    return versions.map((v) => v.fifa_version);
+  } */
+  /* async getAllFifaVersions() {
+    const [results] = await sequelize.query(
+      `SELECT DISTINCT fifa_version FROM players ORDER BY fifa_version ASC`
+    );
+    return results.map((r) => r.fifa_version);
+  } */
 
   async create(data, options = {}) {
     return await Player.create(data, options);
@@ -25,11 +40,11 @@ export default class PlayerRepository {
   async findById(id) {
     return await Player.findOne({
       where: { player_id: id },
-      include: this.getDefaultIncludes()
+      include: this.getDefaultIncludes(),
     });
   }
 
-  async findAllPaginated(page = 1, size = 10, filters = {}) {
+  async findAllPaginated(page = 1, size = 20, filters = {}) {
     const limit = size;
     const offset = (page - 1) * size;
 
@@ -44,9 +59,9 @@ export default class PlayerRepository {
       order: this.buildOrder(filters),
       include,
       attributes: {
-        exclude: ['created_at', 'updated_at']
+        exclude: ["created_at", "updated_at"],
       },
-    })
+    });
 
     const totalItems = result.count;
     const totalPages = Math.ceil(totalItems / limit);
@@ -57,9 +72,9 @@ export default class PlayerRepository {
         totalItems,
         itemsPerPage: limit,
         totalPages,
-        currentPage: page
-      }
-    }
+        currentPage: page,
+      },
+    };
   }
 
   // Métodos auxiliares para construir filtros
@@ -70,112 +85,135 @@ export default class PlayerRepository {
     // 🔍 Filtro por nombre del jugador 1
     if (filters.name) {
       where.short_name = {
-        [Op.like]: `%${filters.name}%`
-      }
+        [Op.like]: `%${filters.name}%`,
+      };
+    }
+
+       // 🔍 Filtro por version de fifa
+    if (filters.version) {
+      where.fifa_version = {
+        [Op.like]: `%${filters.version}%`,
+      };
     }
 
     // 🔍 Filtro por edad 1
     if (filters.age) {
       where.age = {
-        [Op.eq]: parseInt(filters.age)
-      }
+        [Op.eq]: parseInt(filters.age),
+      };
     }
 
     // 🔍 Filtro por nacionalidad 1
     if (filters.nationality) {
-      const nationalityIndex = include.findIndex(inc => inc.as === 'nationalTeams');
+      const nationalityIndex = include.findIndex(
+        (inc) => inc.as === "nationalTeams"
+      );
       if (nationalityIndex !== -1) {
         include[nationalityIndex].required = true;
         include[nationalityIndex].include[0].where = {
-          name: { [Op.like]: `%${filters.nationality}%` }
+          name: { [Op.like]: `%${filters.nationality}%` },
         };
       }
     }
 
     // 🔍 Filtro por posición 1
     if (filters.position) {
-      const positionIndex = include.findIndex(inc => inc.as === 'positions');
+      const positionIndex = include.findIndex((inc) => inc.as === "positions");
       if (positionIndex !== -1) {
         include[positionIndex].required = true;
         include[positionIndex].where = {
-          name: { [Op.like]: `%${filters.position}%` }
+          name: { [Op.like]: `%${filters.position}%` },
         };
       }
     }
 
-    // 🔍 Filtro por liga 1
     if (filters.league) {
-      const clubContractIndex = include.findIndex(inc => inc.as === 'clubContracts');
+      const clubContractIndex = include.findIndex(
+        (inc) => inc.as === "clubContracts"
+      );
       if (clubContractIndex !== -1) {
         include[clubContractIndex].required = true;
         include[clubContractIndex].include[0].required = true;
         include[clubContractIndex].include[0].include[0].where = {
-          name: { [Op.like]: `%${filters.league}%` }
+          name: { [Op.like]: `%${filters.league}%` },
         };
       }
     }
 
-    // 🔍 Filtro por club 1
     if (filters.club) {
-      const clubContractIndex = include.findIndex(inc => inc.as === 'clubContracts');
+      const clubContractIndex = include.findIndex(
+        (inc) => inc.as === "clubContracts"
+      );
       if (clubContractIndex !== -1) {
         include[clubContractIndex].required = true;
         include[clubContractIndex].include[0].where = {
-          name: { [Op.like]: `%${filters.club}%` }
+          name: { [Op.like]: `%${filters.club}%` },
         };
       }
     }
 
-    // 🔍 Filtro por tags 1
     if (filters.tags) {
-      const tagsIndex = include.findIndex(inc => inc.as === 'tags');
+      const tagsIndex = include.findIndex((inc) => inc.as === "tags");
       if (tagsIndex !== -1) {
         include[tagsIndex].required = true;
         include[tagsIndex].where = {
-          name: { [Op.like]: `%${filters.tags}%` }
+          name: { [Op.like]: `%${filters.tags}%` },
         };
       }
     }
 
-    // 🔍 Filtro por traits 1
     if (filters.traits) {
-      const traitsIndex = include.findIndex(inc => inc.as === 'traits');
+      const traitsIndex = include.findIndex((inc) => inc.as === "traits");
       if (traitsIndex !== -1) {
         include[traitsIndex].required = true;
         include[traitsIndex].where = {
-          name: { [Op.like]: `%${filters.traits}%` }
+          name: { [Op.like]: `%${filters.traits}%` },
         };
       }
     }
+    return {
+      where,
+      include,
+    };
   }
 
   buildOrder(filters = {}) {
-    // Orden por defecto
-    let order = [['created_at', 'DESC']];
+    let order = [["created_at", "DESC"]];
 
-    // 🔍 Ordenamiento por overall
-    if (filters.sortBy === 'overall') {
-      order = [[{ model: PlayerStats, as: 'stats' }, 'overall', filters.sortOrder || 'DESC']];
+    if (filters.sortBy === "overall") {
+      order = [
+        [
+          { model: PlayerStats, as: "stats" },
+          "overall",
+          filters.sortOrder || "DESC",
+        ],
+      ];
     }
 
-    // 🔍 Ordenamiento por potencial
-    else if (filters.sortBy === 'potential') {
-      order = [[{ model: PlayerStats, as: 'stats' }, 'potential', filters.sortOrder || 'DESC']];
+    else if (filters.sortBy === "potential") {
+      order = [
+        [
+          { model: PlayerStats, as: "stats" },
+          "potential",
+          filters.sortOrder || "DESC",
+        ],
+      ];
     }
 
-    // 🔍 Ordenamiento por valor
-    else if (filters.sortBy === 'value') {
-      order = [['value_eur', filters.sortOrder || 'DESC']];
+    else if (filters.sortBy === "value") {
+      order = [["value_eur", filters.sortOrder || "DESC"]];
     }
 
-    // 🔍 Ordenamiento por edad
-    else if (filters.sortBy === 'age') {
-      order = [['age', filters.sortOrder || 'ASC']];
+    else if (filters.sortBy === "age") {
+      order = [["age", filters.sortOrder || "ASC"]];
     }
 
-    // 🔍 Ordenamiento por nombre
-    else if (filters.sortBy === 'name') {
-      order = [['short_name', filters.sortOrder || 'ASC']];
+    else if (filters.sortBy === "fifa_version") {
+      order = [["fifa_version", filters.sortOrder || "ASC"]];
+    }
+
+    else if (filters.sortBy === "name") {
+      order = [["short_name", filters.sortOrder || "ASC"]];
     }
 
     return order;
@@ -185,58 +223,60 @@ export default class PlayerRepository {
     return [
       {
         model: NationalTeam,
-        as: 'nationalTeams',
-        attributes: { exclude: ['created_at', 'updated_at', 'player_id', 'nationality_id'] },
+        as: "nationalTeams",
+        attributes: {
+          exclude: ["created_at", "updated_at", "player_id", "nationality_id"],
+        },
         include: [
           {
             model: Nationality,
-            as: 'nationality',
-            attributes: { exclude: ['created_at', 'updated_at'] },
-          }
-        ]
+            as: "nationality",
+            attributes: { exclude: ["created_at", "updated_at"] },
+          },
+        ],
       },
       {
         model: Position,
-        as: 'positions',
+        as: "positions",
         through: { attributes: [] },
-        attributes: { exclude: ['created_at', 'updated_at'] }
+        attributes: { exclude: ["created_at", "updated_at"] },
       },
       {
         model: Tag,
-        as: 'tags',
+        as: "tags",
         through: { attributes: [] },
-        attributes: { exclude: ['created_at', 'updated_at'] }
+        attributes: { exclude: ["created_at", "updated_at"] },
       },
       {
         model: Trait,
-        as: 'traits',
+        as: "traits",
         through: { attributes: [] },
-        attributes: { exclude: ['created_at', 'updated_at'] }
+        attributes: { exclude: ["created_at", "updated_at"] },
       },
       {
         model: PlayerStats,
-        as: 'stats',
-        attributes: { exclude: ['created_at', 'updated_at'] }
+        as: "stats",
+        attributes: { exclude: ["created_at", "updated_at"] },
       },
       {
         model: ClubContract,
-        as: 'clubContracts',
-        attributes: { exclude: ['created_at', 'updated_at'] },
+        as: "clubContracts",
+        attributes: { exclude: ["created_at", "updated_at"] },
         include: [
           {
             model: Club,
-            as: 'club',
-            attributes: { exclude: ['created_at', 'updated_at'] },
+            as: "club",
+            attributes: { exclude: ["created_at", "updated_at"] },
             include: [
               {
                 model: League,
-                as: 'league',
-                attributes: { exclude: ['created_at', 'updated_at'] },
-              }
-            ]
-          }
-        ]
-      }
+                as: "league",
+                attributes: { exclude: ["created_at", "updated_at"] },
+              },
+            ],
+          },
+        ],
+      },
     ];
   }
 
@@ -255,8 +295,8 @@ export default class PlayerRepository {
 
   async findTopPlayers(limit = 10) {
     return this.findAllPaginated(1, limit, {
-      sortBy: 'overall',
-      sortOrder: 'DESC'
+      sortBy: "overall",
+      sortOrder: "DESC",
     });
   }
 
@@ -264,8 +304,8 @@ export default class PlayerRepository {
     return this.findAllPaginated(1, 10, {
       maxAge,
       minPotential,
-      sortBy: 'potential',
-      sortOrder: 'DESC'
+      sortBy: "potential",
+      sortOrder: "DESC",
     });
   }
 }

@@ -2,6 +2,13 @@ import { Position } from '../shared/models/Position.js'
 import { PlayerPosition } from '../shared/models/PlayerPosition.js'
 
 export default class PositionRepository {
+
+  async all() {
+    return await Position.findAll({
+      attributes: ['id', 'name']
+    })
+  }
+
   async bulkCreate(id, datas, options = {}) {
     const normalizeDatas = datas.map(p => p.trim()).filter(p => p);
 
