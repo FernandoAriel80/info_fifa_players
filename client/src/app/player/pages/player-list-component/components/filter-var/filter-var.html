@@ -1,0 +1,70 @@
+<div>
+    <form [formGroup]="filterForm" class="filter-container">
+        <div class="filter-row">
+            <div class="filter-group">
+                <span class="filter-label">Posición:</span>
+                <select class="position-select" id="position-select" formControlName="position">
+                    @for (position of positions; track $index) {
+                    <option [value]="position.name">{{position.name}}</option>
+                    }
+                </select>
+            </div>
+            <div class="filter-group">
+                <span class="filter-label">Nacionalidad:</span>
+                <select class="nationality-select" id="nationality-select" formControlName="nationality">
+                    @for (nationality of nationalites; track $index) {
+                    <option [value]="nationality.name">{{nationality.name}}</option>
+                    }
+                </select>
+            </div>
+            <div class="filter-group">
+                <span class="filter-label">Equipo:</span>
+                <select class="club-select" id="club-select" formControlName="club">
+                    @for (club of clubs; track $index) {
+                    <option [value]="club.name">{{club.name}}</option>
+                    }
+                </select>
+
+            </div>
+            <div class="filter-group">
+                <span class="filter-label">Liga:</span>
+                <select class="league-select" id="league-select" formControlName="league">
+                    @for (league of leagues; track $index) {
+                    <option [value]="league.name">{{league.name}}</option>
+                    }
+                </select>
+            </div>
+            <div class="filter-group">
+                <span class="filter-label">Año:</span>
+                <select class="version-select" id="version-select" formControlName="version">
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                    <option value="21">21</option>
+                    <option value="22">22</option>
+                    <option value="23">23</option>
+                </select>
+            </div>
+        </div>
+        <!-- Search by name -->
+
+        <div class="filter-row">
+            <div class="search-section">
+                <input type="text" class="search-input" placeholder="Search by name..." formControlName="name">
+            </div>
+            <div class="sort-section">
+                <select class="sort-select" id="sort-select" formControlName="sortBy">
+                    <option value="name">Nombre</option>
+                    <option value="age">Edad</option>
+                    <option value="club">Equipo</option>
+                    <option value="fifa_version">Año</option>
+                </select>
+            </div>
+            <button class="apply-btn" (click)="applyFilters()">Filtrar</button>
+        </div>
+    </form>
+
+</div>

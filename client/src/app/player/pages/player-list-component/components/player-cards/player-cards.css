@@ -1,0 +1,209 @@
+.players-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 5px;
+    padding: 15px;
+    box-sizing: border-box;
+    width: 100%;
+    align-items: center;
+}
+
+.carta-futbol {
+    width: 100%;
+    height: auto;
+}
+
+.card-info-header {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.carta-futbol {
+    width: 250px;
+    max-width: 200px;
+    height: auto;
+    background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+    border-radius: 15px;
+    border: 3px solid #ffd700;
+    position: relative;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    color: white;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    padding: 15px 5px;
+    margin: 5px;
+    box-sizing: border-box;
+    flex-shrink: 0;
+}
+
+.large-number {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #ffd700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    margin: 5px;
+}
+
+.top-flag {
+    top: 20px;
+    right: 20px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.position {
+    background: linear-gradient(45deg, #75aadb, #436f9f);
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    margin: 5px;
+}
+
+.player-name {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+    text-align: center;
+    margin: 7px;
+    word-wrap: break-word;
+}
+
+.player-image {
+    z-index: 1;
+}
+
+.card-info-header {
+    display: flex;
+    justify-content: space-between;
+    margin: 7px;
+    flex-wrap: wrap;
+}
+
+.card-info-header-left {
+    display: block;
+}
+
+.stats-container {
+    left: 0;
+    right: 0;
+    padding: 5px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 0.85rem;
+    padding: 2px 8px;
+}
+
+.stat-label {
+    color: #cccccc;
+    white-space: nowrap;
+}
+
+.stat-value {
+    color: #ffd700;
+    font-weight: bold;
+    min-width: 30px;
+    text-align: right;
+}
+
+.patron-fondo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.1;
+    background:
+        linear-gradient(45deg, transparent 45%, #ffd700 45%, #ffd700 55%, transparent 55%),
+        linear-gradient(-45deg, transparent 45%, #ffd700 45%, #ffd700 55%, transparent 55%);
+    background-size: 20px 20px;
+}
+
+
+@media (max-width: 480px) {
+    .players-container {
+        gap: 10px;
+        padding: 10px;
+        justify-content: center;
+    }
+
+    .carta-futbol {
+        width: 100%;
+        max-width: 200px;
+        margin: 5px auto;
+    }
+
+    .player-name {
+        font-size: 1.3rem;
+    }
+
+    .stat-item {
+        font-size: 0.8rem;
+        margin: 3px 10px;
+    }
+
+    .stats-container {
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+
+@media (min-width: 481px) and (max-width: 768px) {
+    .players-container {
+        gap: 15px;
+        justify-content: center;
+    }
+
+    .carta-futbol {
+        width: 220px;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .players-container {
+        gap: 20px;
+        justify-content: center;
+    }
+
+    .carta-futbol {
+        width: 230px;
+    }
+}
+
+@media (min-width: 1025px) {
+    .players-container {
+        gap: 25px;
+        justify-content: flex-start;
+    }
+
+    .carta-futbol {
+        width: 250px;
+    }
+}
+
+@media (max-width: 320px) {
+    .carta-futbol {
+        max-width: 260px;
+        padding: 10px 5px;
+    }
+
+    .player-name {
+        font-size: 1.2rem;
+    }
+
+    .stats-container {
+        grid-template-columns: 1fr;
+    }
+}

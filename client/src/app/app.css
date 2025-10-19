@@ -1,0 +1,9 @@
+.body-container {
+    background-image: url('../../public/main-background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #000000;
+    opacity: 90%
+        /* Color de respaldo si la imagen no carga */
+}

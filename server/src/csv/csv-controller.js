@@ -1,9 +1,9 @@
 import { Parser } from "json2csv";
 
 export default class CsvController {
-  constructor(createCsvUseCase, allPlayerPaginatedUseCase) {
+  constructor(createCsvUseCase, allPlayerFilterderUseCase) {
     this.createCsvUseCase = createCsvUseCase;
-    this.allPlayerPaginatedUseCase = allPlayerPaginatedUseCase;
+    this.allPlayerFilterderUseCase = allPlayerFilterderUseCase;
   }
 
   async uploadCsv(req, res) {
@@ -34,8 +34,6 @@ export default class CsvController {
 
   async exportPlayersCSV(req, res) {
     try {
-      const page = Math.max(parseInt(req.query.page) || 1, 1);
-      const size = Math.max(parseInt(req.query.size) || 20, 1);
       const filters = {
         name: req.query.name,
         nationality: req.query.nationality,
@@ -44,13 +42,8 @@ export default class CsvController {
         club: req.query.club,
         sortBy: req.query.sortBy,
       };
-      const players = await this.allPlayerPaginatedUseCase.execute(
-        page,
-        size,
-        filters
-      );
-
-      const filteredPlayers = players.data;
+      const players = await this.allPlayerFilterderUseCase.execute(filters);
+      const filteredPlayers = players;
       const mappedPlayers = filteredPlayers.map((player) => ({
         player_id: player.id,
         player_url: player.player_url,
@@ -68,22 +61,20 @@ export default class CsvController {
         dob: player.dob,
         height_cm: player.height_cm,
         weight_kg: player.weight_kg,
-        league_id: player.clubContracts?.[0]?.league?.id || "",
-        league_name: player.clubContracts?.[0]?.league?.name || "",
+        league_id: player.clubContracts?.[0]?.club.league?.id || "",
+        league_name: player.clubContracts?.[0]?.club.league?.name || "",
         league_level: player.clubContracts?.[0]?.level || "",
         club_team_id: player.clubContracts?.[0]?.club_id || "",
-        club_name: player.clubContracts?.[0]?.name || "",
+        club_name: player.clubContracts?.[0]?.club.name || "",
         club_position: player.clubContracts?.[0]?.position || "",
         club_jersey_number: player.clubContracts?.[0]?.jersey_number || "",
-        club_loaned_from: player.clubContracts?.[0]?.loaned_from || "",
-        club_joined_date: player.clubContracts?.[0]?.joined_date || "",
         club_contract_valid_until_year:
-          player.clubContracts?.[0]?.contract_valid_until_year || "",
-        nationality_id: player.nationalTeams?.[0]?.id || "",
-        nationality_name: player.nationalTeams?.[0]?.name || "",
-        nation_team_id: player.nationalTeams?.[0]?.id || "",
-        nation_position: player.nationalTeams?.[0]?.position || "",
-        nation_jersey_number: player.nationalTeams?.[0]?.jersey_number || "",
+          player.clubContracts?.[0]?.club.contract_valid_until_year || "",
+        nationality_id: player.nationalTeams?.[0]?.nationality.id || "",
+        nationality_name: player.nationalTeams?.[0]?.nationality.name || "",
+        nation_team_id: player.nationalTeams?.[0]?.nationality.id || "",
+        nation_position: player.nationalTeams?.[0]?.nationality.position || "",
+        nation_jersey_number: player.nationalTeams?.[0]?.nationality.jersey_number || "",
         preferred_foot: player.preferred_foot,
         weak_foot: player.weak_foot,
         skill_moves: player.skill_moves,
@@ -138,36 +129,10 @@ export default class CsvController {
         goalkeeping_positioning: player.stats?.goalkeeping_positioning || "",
         goalkeeping_reflexes: player.stats?.goalkeeping_reflexes || "",
         goalkeeping_speed: player.stats?.goalkeeping_speed || "",
-        ls: player.stats?.ls || "",
-        st: player.stats?.st || "",
-        rs: player.stats?.rs || "",
-        lw: player.stats?.lw || "",
-        lf: player.stats?.lf || "",
-        cf: player.stats?.cf || "",
-        rf: player.stats?.rf || "",
-        rw: player.stats?.rw || "",
-        lam: player.stats?.lam || "",
-        cam: player.stats?.cam || "",
-        ram: player.stats?.ram || "",
-        lm: player.stats?.lm || "",
-        lcm: player.stats?.lcm || "",
-        cm: player.stats?.cm || "",
-        rcm: player.stats?.rcm || "",
-        rm: player.stats?.rm || "",
-        lwb: player.stats?.lwb || "",
-        ldm: player.stats?.ldm || "",
-        cdm: player.stats?.cdm || "",
-        rdm: player.stats?.rdm || "",
-        rwb: player.stats?.rwb || "",
-        lb: player.stats?.lb || "",
-        lcb: player.stats?.lcb || "",
-        cb: player.stats?.cb || "",
-        rcb: player.stats?.rcb || "",
-        rb: player.stats?.rb || "",
-        gk: player.stats?.gk || "",
         player_face_url: player.player_face_url,
       }));
 
+      
       const parser = new Parser();
       const csv = parser.parse(mappedPlayers);
 

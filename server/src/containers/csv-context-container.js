@@ -21,7 +21,7 @@ import CreateCsvUseCase from "../csv/create-csv-usecase.js";
 
 //controllers
 import CsvController from "../csv/csv-controller.js";
-import AllPlayerPaginatedUseCase from "../players/all-player-paginated-usecase.js";
+import AllPlayerFilterderUseCase from "../players/all-player-filterder-usecase.js";
 
 export default class CsvContextContainer {
   constructor() {
@@ -63,7 +63,7 @@ export default class CsvContextContainer {
       this.parserCsvFileService,
       this.parseCsvDataService
     );
-    this.allPlayerPaginatedUseCase = new AllPlayerPaginatedUseCase(
+    this.allPlayerFilterderUseCase = new AllPlayerFilterderUseCase(
       this.playerRepository
     );
   }
@@ -72,7 +72,7 @@ export default class CsvContextContainer {
   getCsvController() {
     return new CsvController(
       this.createCsvUseCase,
-      this.allPlayerPaginatedUseCase
+      this.allPlayerFilterderUseCase
     );
   }
 }
