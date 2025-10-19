@@ -17,22 +17,6 @@ export default class PlayerRepository {
     });
   }
 
-  /*  async getAllFifaVersions() {
-    const versions = await Player.findAll({
-      attributes: ["fifa_version"],
-      group: ["fifa_version"],
-      order: [["fifa_version", "ASC"]],
-      raw: true,
-    });
-    return versions.map((v) => v.fifa_version);
-  } */
-  /* async getAllFifaVersions() {
-    const [results] = await sequelize.query(
-      `SELECT DISTINCT fifa_version FROM players ORDER BY fifa_version ASC`
-    );
-    return results.map((r) => r.fifa_version);
-  } */
-
   async create(data, options = {}) {
     return await Player.create(data, options);
   }
@@ -44,16 +28,11 @@ export default class PlayerRepository {
     });
   }
 
-  async findAllPaginated(page = 1, size = 20, filters = {}) {
-    const limit = size;
-    const offset = (page - 1) * size;
-
+  async findAllFiltered(filters = {}) {
     const { where, include } = this.buildFilters(filters);
 
-    const result = await Player.findAndCountAll({
+    const players = await Player.findAll({
       where,
-      limit,
-      offset,
       distinct: true,
       subQuery: false,
       order: this.buildOrder(filters),
@@ -63,11 +42,40 @@ export default class PlayerRepository {
       },
     });
 
-    const totalItems = result.count;
+    return players;
+  }
+
+  async findAllPaginated(page = 1, size = 20, filters = {}) {
+    const limit = size;
+    const offset = (page - 1) * size;
+    const { where, include } = this.buildFilters(filters);
+
+    // Paso 1: obtener solo los IDs (sin includes)
+    const { count: totalItems, rows: idRows } = await Player.findAndCountAll({
+      where,
+      limit,
+      offset,
+      attributes: ["id"],
+      order: this.buildOrder(filters),
+      distinct: true,
+      subQuery: false,
+    });
+
+    const playerIds = idRows.map((p) => p.id);
+
+    // Paso 2: obtener los jugadores completos por ID (ahora sí con includes)
+    const players = await Player.findAll({
+      where: { id: playerIds },
+      include,
+      order: this.buildOrder(filters),
+      subQuery: false,
+      attributes: { exclude: ["created_at", "updated_at"] },
+    });
+
     const totalPages = Math.ceil(totalItems / limit);
 
     return {
-      data: result.rows,
+      data: players,
       meta: {
         totalItems,
         itemsPerPage: limit,
@@ -89,7 +97,7 @@ export default class PlayerRepository {
       };
     }
 
-       // 🔍 Filtro por version de fifa
+    // 🔍 Filtro por version de fifa
     if (filters.version) {
       where.fifa_version = {
         [Op.like]: `%${filters.version}%`,
@@ -188,9 +196,7 @@ export default class PlayerRepository {
           filters.sortOrder || "DESC",
         ],
       ];
-    }
-
-    else if (filters.sortBy === "potential") {
+    } else if (filters.sortBy === "potential") {
       order = [
         [
           { model: PlayerStats, as: "stats" },
@@ -198,21 +204,13 @@ export default class PlayerRepository {
           filters.sortOrder || "DESC",
         ],
       ];
-    }
-
-    else if (filters.sortBy === "value") {
+    } else if (filters.sortBy === "value") {
       order = [["value_eur", filters.sortOrder || "DESC"]];
-    }
-
-    else if (filters.sortBy === "age") {
+    } else if (filters.sortBy === "age") {
       order = [["age", filters.sortOrder || "ASC"]];
-    }
-
-    else if (filters.sortBy === "fifa_version") {
+    } else if (filters.sortBy === "fifa_version") {
       order = [["fifa_version", filters.sortOrder || "ASC"]];
-    }
-
-    else if (filters.sortBy === "name") {
+    } else if (filters.sortBy === "name") {
       order = [["short_name", filters.sortOrder || "ASC"]];
     }
 
@@ -278,34 +276,5 @@ export default class PlayerRepository {
         ],
       },
     ];
-  }
-
-  // 🔍 Métodos específicos para búsquedas comunes
-  async findByNationality(nationalityName) {
-    return this.findAllPaginated(1, 10, { nationality: nationalityName });
-  }
-
-  async findByPosition(positionName) {
-    return this.findAllPaginated(1, 10, { position: positionName });
-  }
-
-  async findByClub(clubName) {
-    return this.findAllPaginated(1, 10, { club: clubName });
-  }
-
-  async findTopPlayers(limit = 10) {
-    return this.findAllPaginated(1, limit, {
-      sortBy: "overall",
-      sortOrder: "DESC",
-    });
-  }
-
-  async findYoungTalents(maxAge = 21, minPotential = 80) {
-    return this.findAllPaginated(1, 10, {
-      maxAge,
-      minPotential,
-      sortBy: "potential",
-      sortOrder: "DESC",
-    });
   }
 }

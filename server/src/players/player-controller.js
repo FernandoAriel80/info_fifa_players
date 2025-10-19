@@ -18,8 +18,8 @@ export default class PlayerController {
     async getAllPaginated(req, res) {
         try {
 
-            const page = Math.max(parseInt(req.query.page) || 1, 1)
-            const size = Math.max(parseInt(req.query.size) || 20, 1)
+            const page = Math.max(parseInt(req.query.page) || 1)
+            const size = Math.max(parseInt(req.query.size) || 40)
 
             const filters = {
                 name: req.query.name,
