@@ -1,0 +1,5 @@
+.header-container {
+    background: linear-gradient(to right, #255a2c, #5ad660);
+    min-height: 90px;
+    opacity: 85%;
+}

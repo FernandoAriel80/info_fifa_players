@@ -1,0 +1,9 @@
+.main-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    min-height: 100lvh;
+    background-color: rgba(7, 4, 4, 0.5);
+    box-sizing: border-box;
+    border-bottom: 2px solid black;
+}
+
