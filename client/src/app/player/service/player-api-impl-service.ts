@@ -36,5 +36,11 @@ export class PlayerApiImplService {
     return this.http.get<Player>(`/players/${id}`);
   }
 
- 
+  getPlayersByName(name: string): Observable<PlayerApiResponseDto<Player[]>> {
+    let params = new HttpParams().set('name', name);
+
+    return this.http.get<PlayerApiResponseDto<Player[]>>(`${this.apiUrl}/players/players-name`, {
+      params,
+    });
+  }
 }

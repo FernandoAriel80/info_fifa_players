@@ -9,5 +9,5 @@ export interface ClubContract {
   jersey_number: number;
   wage_eur: string;
   value_eur: string;
-  club: Club[];
+  club: Club;
 }

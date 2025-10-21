@@ -21,6 +21,17 @@ export default class PlayerRepository {
     return await Player.create(data, options);
   }
 
+  async findAllByName(name) {
+    return await Player.findAll({
+      where: {
+        long_name: {
+          [Op.eq]: name.trim(),
+        },
+      },
+      include: this.getDefaultIncludes(),
+    });
+  }
+
   async findById(id) {
     return await Player.findOne({
       where: { player_id: id },
@@ -50,6 +61,7 @@ export default class PlayerRepository {
     const offset = (page - 1) * size;
     const { where, include } = this.buildFilters(filters);
 
+    //console.log("INCLUDE construido:", JSON.stringify(include, null, 2));
     // Paso 1: obtener solo los IDs (sin includes)
     const { count: totalItems, rows: idRows } = await Player.findAndCountAll({
       where,
@@ -110,54 +122,52 @@ export default class PlayerRepository {
         [Op.eq]: parseInt(filters.age),
       };
     }
-
     // 🔍 Filtro por nacionalidad 1
     if (filters.nationality) {
       const nationalityIndex = include.findIndex(
         (inc) => inc.as === "nationalTeams"
       );
       if (nationalityIndex !== -1) {
-        include[nationalityIndex].required = true;
+        // Solo aplicamos el where, sin required
         include[nationalityIndex].include[0].where = {
           name: { [Op.like]: `%${filters.nationality}%` },
         };
       }
     }
+    // 🔍 Filtro por nacionalidad
 
     // 🔍 Filtro por posición 1
+
     if (filters.position) {
-      const positionIndex = include.findIndex((inc) => inc.as === "positions");
-      if (positionIndex !== -1) {
-        include[positionIndex].required = true;
-        include[positionIndex].where = {
-          name: { [Op.like]: `%${filters.position}%` },
-        };
-      }
+      console.log(filters.position);
+
+      include[1].required = true;
+      include[1].where = {
+        name: { [Op.like]: `%${filters.position}%` },
+      };
+      //}
+      console.log(include[1]);
     }
 
     if (filters.league) {
-      const clubContractIndex = include.findIndex(
-        (inc) => inc.as === "clubContracts"
-      );
-      if (clubContractIndex !== -1) {
-        include[clubContractIndex].required = true;
-        include[clubContractIndex].include[0].required = true;
-        include[clubContractIndex].include[0].include[0].where = {
-          name: { [Op.like]: `%${filters.league}%` },
-        };
-      }
+      console.log(filters.league);
+
+      include[5].include[0].include.required = true;
+      include[5].include[0].include.where = {
+        name: { [Op.like]: `%${filters.league}%` },
+      };
+      //}
+      console.log(include[5].include[0].include);
     }
 
     if (filters.club) {
-      const clubContractIndex = include.findIndex(
-        (inc) => inc.as === "clubContracts"
-      );
-      if (clubContractIndex !== -1) {
-        include[clubContractIndex].required = true;
-        include[clubContractIndex].include[0].where = {
-          name: { [Op.like]: `%${filters.club}%` },
-        };
-      }
+      console.log(filters.club);
+      include[5].include.required = true;
+      include[5].include.where = {
+        name: { [Op.like]: `%${filters.club}%` },
+      };
+      console.log(include[5].include);
+      //}
     }
 
     if (filters.tags) {

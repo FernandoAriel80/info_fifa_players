@@ -16,12 +16,12 @@ export default class CreateCsvUseCase {
     if (!csvData) throw new Error('Error en el parseo: parseCSVFile')
 
     const processedData = this.parseCsvDataService.parseCSVData(csvData);
-    // ✅ SOLO PRIMEROS 1000 REGISTROS PARA PRUEBA
-    const testData = processedData.slice(0, 1000);
+    // ✅ SOLO PRIMEROS 20000 REGISTROS PARA PRUEBA
+    //const testData = processedData.slice(0, 20000);
     // Procesar en transacción
     console.log('🎯 Use PlayerBulkCsvRepository ejecutándose...');
-    const result = await this.playerBulkCsvRepository.saveAllPlayers(testData);
-    //const result = await this.playerBulkCsvRepository.saveAllPlayers(processedData);
+    //const result = await this.playerBulkCsvRepository.saveAllPlayers(testData);
+    const result = await this.playerBulkCsvRepository.saveAllPlayers(processedData);
     console.log("finalizo el usecase")
     return {
       success: true,

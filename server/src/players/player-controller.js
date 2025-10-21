@@ -4,6 +4,7 @@ export default class PlayerController {
     constructor(usescases) {
         this.allPlayerUseCase = usescases.allPlayerUseCase
         this.allPlayerPaginatedUseCase = usescases.allPlayerPaginatedUseCase
+        this.allPlayerByNameUseCase = usescases.allPlayerByNameUseCase
     }
 
     async getall(req, res) {
@@ -40,6 +41,19 @@ export default class PlayerController {
                 meta: result.meta,
             })
  
+        } catch (error) {
+            res.status(500).json({ error: error.message })
+        }
+    }
+
+    async getPlayerByName(req, res){
+        try {
+            const name = req.query.name
+            const data = await this.allPlayerByNameUseCase.execute(name)
+            res.status(200).json({
+                success: true,
+                data: data,
+            })
         } catch (error) {
             res.status(500).json({ error: error.message })
         }

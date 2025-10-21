@@ -65,7 +65,6 @@ export class FilterVar implements OnInit {
     this.nationalityApiImplService.getNationalities().subscribe({
       next: (response) => {
         this.nationalites = response.data;
-        console.log(response.data);
       },
     });
   }
@@ -74,7 +73,6 @@ export class FilterVar implements OnInit {
     this.positionApiImpleService.getPositions().subscribe({
       next: (response) => {
         this.positions = response.data;
-        console.log(response.data);
       },
     });
   }
@@ -83,7 +81,6 @@ export class FilterVar implements OnInit {
     this.leagueApiImplService.getLeagues().subscribe({
       next: (response) => {
         this.leagues = response.data;
-        console.log(response.data);
       },
     });
   }
@@ -92,7 +89,6 @@ export class FilterVar implements OnInit {
     this.clubApiImplService.getClubs().subscribe({
       next: (response) => {
         this.clubs = response.data;
-        console.log(response.data);
       },
     });
   }
