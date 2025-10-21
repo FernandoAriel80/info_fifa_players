@@ -1,49 +1,53 @@
 <div class="players-container">
     @for (player of players; track $index) {
-    <div class="carta-futbol">
-        <div class="patron-fondo"></div>
-        <div class="card-info-header">
-            <div class="card-info-header-left">
-                <div class="large-number">{{player.stats.overall}}</div>
-                <div class="position">{{player.positions[0].name}}</div>
-                <div class="top-flag"></div>
-            </div>
-            <!-- Imagen del jugador -->
-            <img [ngSrc]="player.player_face_url" [alt]="player.short_name" width="100" height="100"
-                class="player-image" referrerpolicy="no-referrer" />
-        </div>
-        <div class="player-name"> {{ player.short_name }}</div>
+    <a class="link-container" [routerLink]="['/players/player', player.long_name, player.id]">
 
-        <div class="stats-container">
-            <div>
-                <div class="stat-item">
-                    <span class="stat-value">{{player.stats.movement_acceleration}}</span>
-                    <span class="stat-label">PAC</span>
+        <div class="carta-futbol">
+
+            <div class="patron-fondo"></div>
+            <div class="card-info-header">
+                <div class="card-info-header-left">
+                    <div class="large-number">{{player.stats.overall}}</div>
+                    <div class="position">{{player.positions[0].name}}</div>
+                    <div class="top-flag"></div>
                 </div>
-                <div class="stat-item">
-                    <span class="stat-value">{{player.stats.power_shot_power}}</span>
-                    <span class="stat-label">SHO</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-value">{{player.stats.attacking_short_passing}}</span>
-                    <span class="stat-label">PAS</span>
-                </div>
+                <!-- Imagen del jugador -->
+                <img [ngSrc]="player.player_face_url" [alt]="player.short_name" width="100" height="100"
+                    class="player-image" referrerpolicy="no-referrer" />
             </div>
-            <div>
-                <div class="stat-item">
-                    <span class="stat-value">{{player.stats.dribbling}}</span>
-                    <span class="stat-label">DRI</span>
+            <div class="player-name"> {{ player.short_name }}</div>
+
+            <div class="stats-container">
+                <div>
+                    <div class="stat-item">
+                        <span class="stat-value">{{player.stats.movement_acceleration}}</span>
+                        <span class="stat-label">PAC</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">{{player.stats.power_shot_power}}</span>
+                        <span class="stat-label">SHO</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">{{player.stats.attacking_short_passing}}</span>
+                        <span class="stat-label">PAS</span>
+                    </div>
                 </div>
-                <div class="stat-item">
-                    <span class="stat-value">{{player.stats.defending_standing_tackle}}</span>
-                    <span class="stat-label">DEF</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-value">{{player.stats.physic}}</span>
-                    <span class="stat-label">PHY</span>
+                <div>
+                    <div class="stat-item">
+                        <span class="stat-value">{{player.stats.dribbling}}</span>
+                        <span class="stat-label">DRI</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">{{player.stats.defending_standing_tackle}}</span>
+                        <span class="stat-label">DEF</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">{{player.stats.physic}}</span>
+                        <span class="stat-label">PHY</span>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </a>
     }
 </div>

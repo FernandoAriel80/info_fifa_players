@@ -1,8 +1,8 @@
 <!-- -----filter bar------- -->
 <app-filter-var (filtersChanged)="onFiltersChanged($event)"></app-filter-var>
 <!-- importar -->
-<input type="file" (change)="onFileSelected($event)" accept=".csv" />
-<button (click)="uploadCSV()">Subir CSV</button>
+<!-- <input type="file" (change)="onFileSelected($event)" accept=".csv" />
+<button (click)="uploadCSV()">Subir CSV</button> -->
 @if(players.length > 0){
 <!-- exportar -->
 <button class="export-btn" (click)="onDownloadCSV()">Exportar</button>
@@ -29,7 +29,7 @@
 }
 @if( players.length === 0){
 <p>No se encontraron jugadores</p>
-<div class="pagination-container">
+<!-- <div class="pagination-container">
     <button class="pagination-btn" [disabled]="meta.currentPage === 1" (click)="changePage(meta.currentPage - 1)">
         ⬅ Anterior
     </button>
@@ -40,5 +40,5 @@
         (click)="changePage(meta.currentPage + 1)">
         Siguiente ➡
     </button>
-</div>
+</div> -->
 }

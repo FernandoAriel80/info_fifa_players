@@ -50,7 +50,7 @@ export class PlayerListComponent implements OnInit {
         this.players = response.data;
         this.loading = false;
         this.meta = response.meta;
-        console.log(response);
+        console.log(response.data)
       },
     });
   }

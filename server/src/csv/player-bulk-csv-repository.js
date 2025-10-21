@@ -11,6 +11,7 @@ export default class PlayerBulkCsvRepository {
             
             for (const data of processedData) {
                 const player = await this.savePlayerWithRelations(data, transaction)
+                console.log(players.length)
                 players.push(player);
             }
 

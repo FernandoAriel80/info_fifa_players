@@ -1,7 +1,7 @@
 import { Nationality } from "./nationality-model";
 
 export interface NationalTeam {
-  nationality: Nationality[];
+  nationality: Nationality;
   position: string;
   jersey_number: number | null;
 }
