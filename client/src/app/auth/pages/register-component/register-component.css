@@ -1,0 +1,108 @@
+.container {
+    display: flex;
+    justify-content: center;
+}
+
+/* Contenedor principal */
+.register-container {
+    min-height: 600px;
+    max-width: 420px;
+    padding: 20px;
+}
+
+/* Tarjeta */
+.card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    padding: 30px;
+}
+
+/* Encabezado */
+.card-header h2 {
+    text-align: center;
+    color: #ffd700;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+}
+
+/* Inputs */
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.form-control {
+    width: 300px;
+    padding: 10px 14px;
+    border: 1px solid #ffd70066;
+    border-radius: 8px;
+    background: transparent;
+    color: #ffd700;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #ffd700;
+    outline: none;
+    box-shadow: 0 0 8px #ffd70066;
+}
+
+/* Feedback de error */
+.invalid-feedback {
+    color: #ff6666;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+/* Botón */
+.btn {
+    width: 100%;
+    background: #ffd700;
+    color: #0f3460;
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    background: #ffe44d;
+    transform: translateY(-1px);
+}
+
+/* Enlace de login */
+.text-center p {
+    color: #ffd700;
+    font-size: 14px;
+}
+
+.text-center a {
+    color: #ffe44d;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.text-center a:hover {
+    text-decoration: underline;
+}
+
+/* Mensaje de error general */
+.alert-danger {
+    background: rgba(255, 0, 0, 0.15);
+    border: 1px solid #ff4d4d;
+    color: #ff9999;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 14px;
+    margin-bottom: 15px;
+}

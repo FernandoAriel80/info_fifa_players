@@ -1,0 +1,240 @@
+<p>.</p>
+<div class="statistics-container">
+    <div class="version-header">
+        @for (player of players; track $index) {
+        <div class="version-item" [class.activo]="player.fifa_version === currentVersion"
+            (click)="selectedVersion(player)">
+            {{ player.fifa_version }}
+        </div>
+        }
+    </div>
+
+    @if (currentPlayer) {
+
+    <div class="content">
+        <div class="graphic-photo">
+            <div class="player-photo">
+                <img [ngSrc]="currentPlayer.player_face_url" [alt]="currentPlayer.short_name" width="100" height="100"
+                    class="player-image" referrerpolicy="no-referrer" />
+                <div class="information">
+                    <h3>{{currentPlayer.short_name}}</h3>
+                    <p>{{currentPlayer.long_name}}</p>
+
+                    <div class="data-position">
+                        @for (position of currentPlayer.positions; track $index) {
+                        <p>{{position.name}}</p>
+                        }
+                    </div>
+                    <div>
+                        <div class="data-item">
+                            <span class="data-label">Edad:</span>
+                            <span class="data-valor">{{ currentPlayer.age }}</span>
+                        </div>
+                        <div class="data-item">
+                            <span class="data-label">Altura:</span>
+                            <span class="data-valor">{{ currentPlayer.height_cm }}</span>
+                        </div>
+                        <div class="data-item">
+                            <span class="data-label">Nacionalidad:</span>
+                            <span class="data-valor">{{ currentPlayer.nationalTeams?.[0]?.nationality?.name }}</span>
+                        </div>
+                           <div class="data-item">
+                            <span class="data-label">Equipo:</span>
+                            <span class="data-valor">{{ currentPlayer.clubContracts?.[0]?.club?.name }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="graphic">
+                <canvas baseChart [data]="radarChartData" [options]="radarChartOptions" [type]="radarChartType">
+                </canvas>
+            </div>
+        </div>
+        <div class="data-container">
+
+            <div class="data-info">
+                <div class="column">
+                    <div class="data-item">
+                        <span class="data-label">Centros:</span>
+                        <span class="data-valor">{{ currentPlayer.stats.attacking_crossing }}</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Definición:</span>
+                        <span class="data-valor">{{ currentPlayer.stats.attacking_finishing }}</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Juego Aéreo:</span>
+                        <span class="data-valor">{{ currentPlayer.stats.attacking_heading_accuracy }}</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Pase Corto:</span>
+                        <span class="data-valor">{{ currentPlayer.stats.attacking_short_passing }}</span>
+                    </div>
+                    <!-- REGATE -->
+                    <div class="data-item">
+                        <span class="data-label">Regate:</span>
+                        <span class="data-valor">{{ currentPlayer.stats.dribbling }}</span>
+                    </div>
+                </div>
+                <div class="column">
+                    <!-- DEFENSA -->
+                    <div class="data-item">
+                        <span class="data-label">Defensa:</span>
+                        <span class="data-valor">{{ currentPlayer.stats.defending }}</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Marcaje:</span>
+                        <span class="data-valor">{{ currentPlayer.stats.defending_marking_awareness }}</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Entrada:</span>
+                        <span class="data-valor">{{ currentPlayer.stats.defending_sliding_tackle }}</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Carga:</span>
+                        <span class="data-valor">{{ currentPlayer.stats.defending_standing_tackle }}</span>
+                    </div>
+
+                </div>
+                <div class="column">
+                    <!-- PORTERÍA -->
+                    <div class="data-item">
+                        <span class="data-label">Estiradas:</span>
+                        <span class="data-valor">{{ currentPlayer.stats.goalkeeping_diving }}</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Manos:</span>
+                        <span class="data-valor">{{ currentPlayer.stats.goalkeeping_handling }}</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Saques:</span>
+                        <span class="data-valor">{{ currentPlayer.stats.goalkeeping_kicking }}</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Colocación:</span>
+                        <span class="data-valor">{{ currentPlayer.stats.goalkeeping_positioning }}</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Reflejos:</span>
+                        <span class="data-valor">{{ currentPlayer.stats.goalkeeping_reflexes }}</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Velocidad Portero:</span>
+                        <span class="data-valor">{{ currentPlayer.stats.goalkeeping_speed }}</span>
+                    </div>
+                </div>
+                <div class="column">
+                    <!-- MENTALIDAD -->
+                    <div class="data-item">
+                        <span class="data-label">Agresividad:</span>
+                        <span class="data-valor">{{ currentPlayer.stats.mentality_aggression }}</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Compostura:</span>
+                        <span class="data-valor">{{ currentPlayer.stats.mentality_composure }}</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Visión:</span>
+                        <span class="data-valor">{{ currentPlayer.stats.mentality_vision }}</span>
+                    </div>
+
+                    <!-- MOVIMIENTO -->
+                    <div class="data-item">
+                        <span class="data-label">Aceleración:</span>
+                        <span class="data-valor">{{ currentPlayer.stats.movement_acceleration }}</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Agilidad:</span>
+                        <span class="data-valor">{{ currentPlayer.stats.movement_agility }}</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Reflejos:</span>
+                        <span class="data-valor">{{ currentPlayer.stats.movement_reactions }}</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Velocidad:</span>
+                        <span class="data-valor">{{ currentPlayer.stats.movement_sprint_speed }}</span>
+                    </div>
+
+
+                </div>
+
+                <div class="column">
+                    <!-- GENERALES -->
+                    <div class="data-item">
+                        <span class="data-label">General:</span>
+                        <span class="data-valor">{{ currentPlayer.stats.overall }}</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Ritmo:</span>
+                        <span class="data-valor">{{ currentPlayer.stats.pace }}</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Pase:</span>
+                        <span class="data-valor">{{ currentPlayer.stats.passing }}</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Físico:</span>
+                        <span class="data-valor">{{ currentPlayer.stats.physic }}</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Potencial:</span>
+                        <span class="data-valor">{{ currentPlayer.stats.potential }}</span>
+                    </div>
+
+                </div>
+                <div class="column">
+                    <!-- POTENCIA -->
+                    <div class="data-item">
+                        <span class="data-label">Salto:</span>
+                        <span class="data-valor">{{ currentPlayer.stats.power_jumping }}</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Tiros Lejanos:</span>
+                        <span class="data-valor">{{ currentPlayer.stats.power_long_shots }}</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Potencia Tiro:</span>
+                        <span class="data-valor">{{ currentPlayer.stats.power_shot_power }}</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Resistencia:</span>
+                        <span class="data-valor">{{ currentPlayer.stats.power_stamina }}</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Fuerza:</span>
+                        <span class="data-valor">{{ currentPlayer.stats.power_strength }}</span>
+                    </div>
+
+                    <!-- TIRO -->
+                    <div class="data-item">
+                        <span class="data-label">Tiro:</span>
+                        <span class="data-valor">{{ currentPlayer.stats.shooting }}</span>
+                    </div>
+                </div>
+
+                <div class="column">
+                    <!-- HABILIDAD -->
+                    <div class="data-item">
+                        <span class="data-label">Control:</span>
+                        <span class="data-valor">{{ currentPlayer.stats.skill_ball_control }}</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Regate Habilidad:</span>
+                        <span class="data-valor">{{ currentPlayer.stats.skill_dribbling }}</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Faltas:</span>
+                        <span class="data-valor">{{ currentPlayer.stats.skill_fk_accuracy }}</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Pase Largo:</span>
+                        <span class="data-valor">{{ currentPlayer.stats.skill_long_passing }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    }
+</div>

@@ -1,0 +1,22 @@
+<div class="header-container">
+    <div class="logo">
+        <h2>Fifa Players</h2>
+    </div>
+
+    <nav class="nav">
+        @if (isAuthenticated) {
+        <a routerLink="/">Inicio</a>
+        <a routerLink="players">Jugadores</a>
+        <span class="welcome-text">Bienvenido, {{ currentUser?.name }}</span>
+        <button (click)="onLogout()" class="logout-btn">
+            Cerrar Sesión
+        </button>
+        }@else {
+        <div class="auth-links">
+            <a routerLink="/">Inicio</a>
+            <a routerLink="players">Jugadores</a>
+            <a routerLink="auth/login">Login</a>
+        </div>
+        }
+    </nav>
+</div>

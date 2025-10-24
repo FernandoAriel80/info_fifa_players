@@ -1,0 +1,92 @@
+/* --- Contenido principal --- */
+.hero-section {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 80px;
+    padding: 80px 10%;
+}
+
+/* --- Secciones de contenido --- */
+.content-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 40px;
+}
+
+.content-section.reverse {
+    flex-direction: row-reverse;
+}
+
+/* --- Cajas de texto --- */
+.text-box {
+    width: 45%;
+}
+
+.text-box h2 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+}
+
+.text-box p {
+    font-size: 1rem;
+    color: #ddd;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.btn {
+    background: linear-gradient(90deg, #0f9d58, #34a853);
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background: linear-gradient(90deg, #34a853, #0f9d58);
+}
+
+/* --- Cajas de imágenes --- */
+.image-box {
+    width: 45%;
+}
+
+.image-box img {
+    width: 100%;
+    border-radius: 15px;
+    transform: rotate(5deg);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease;
+}
+
+.content-section.reverse .image-box img {
+    transform: rotate(-5deg);
+}
+
+button a {
+    text-decoration: none;
+    color: #ddd;
+}
+/* --- Responsivo --- */
+@media (max-width: 900px) {
+    .content-section {
+        flex-direction: column;
+    }
+
+    .text-box, .image-box {
+        width: 100%;
+        text-align: center;
+    }
+
+    .image-box img {
+        transform: none;
+    }
+}

@@ -1,0 +1,7 @@
+.env
+
+./node_modules
+
+script_tables.sql
+
+ejemplo.json
